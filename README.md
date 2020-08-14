@@ -179,8 +179,8 @@ public class ShiroConfig {
 	
  	@Bean
 	public DefaultWebSecurityManager securityManager() {
-	    DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-	    securityManager.setRealm(realm());
+	        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+	        securityManager.setRealm(realm());
 		securityManager.setSubjectFactory(subjectFactory());
 		DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
 		DefaultSessionStorageEvaluator sessionStorageEvaluator = new DefaultSessionStorageEvaluator();
