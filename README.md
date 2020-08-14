@@ -216,7 +216,7 @@ public class ShiroConfig {
  	} 	
 }
 ```
-> 详细请参考源码
+> 详细请参考源码, 如果有问题, 请留言
 
 ## 最后
 在禁用session之后, 如果再使用shiro内置过滤器authc, 就会报错, 所以就不要在用authc
