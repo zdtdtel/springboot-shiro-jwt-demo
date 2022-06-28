@@ -10,7 +10,6 @@ import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.apache.shiro.web.mgt.DefaultWebSubjectFactory;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
 
@@ -20,29 +19,8 @@ public class ShiroConfig {
 	@Bean
 	public Realm realm() {
 		return new CustomRealm();
-	}
-	
-	@Bean
-	public DefaultWebSubjectFactory subjectFactory() {
-		return new CustomWebSubjectFactory();
-	}
-	
- 	@Bean
-	public DefaultWebSecurityManager securityManager() {
-	    DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-	    securityManager.setRealm(realm());
-		securityManager.setSubjectFactory(subjectFactory());
-		DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
-		DefaultSessionStorageEvaluator sessionStorageEvaluator = new DefaultSessionStorageEvaluator();
-		// 禁用 session 存储
-		sessionStorageEvaluator.setSessionStorageEnabled(false);
-		subjectDAO.setSessionStorageEvaluator(sessionStorageEvaluator);
-		securityManager.setSubjectDAO(subjectDAO);
-		// 禁用 rememberMe
-		securityManager.setRememberMeManager(null);
-		return securityManager;
-	}
- 	
+	}	
+
  	@Bean
  	public ShiroFilterFactoryBean shiroFilterFactoryBean() {
  		ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
@@ -65,4 +43,18 @@ public class ShiroConfig {
  		return shiroFilterFactoryBean;
  	}
  	
+	private DefaultWebSecurityManager securityManager() {
+	    DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+	    securityManager.setRealm(realm());
+		securityManager.setSubjectFactory(new CustomWebSubjectFactory());
+		DefaultSessionStorageEvaluator sessionStorageEvaluator = new DefaultSessionStorageEvaluator();
+		// 禁用 session 存储
+		sessionStorageEvaluator.setSessionStorageEnabled(false);
+		DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
+		subjectDAO.setSessionStorageEvaluator(sessionStorageEvaluator);
+		securityManager.setSubjectDAO(subjectDAO);
+		// 禁用 rememberMe
+		securityManager.setRememberMeManager(null);
+		return securityManager;
+	}
 }

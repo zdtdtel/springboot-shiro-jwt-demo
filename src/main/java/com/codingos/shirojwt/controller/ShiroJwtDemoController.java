@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,10 +22,15 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.codingos.shirojwt.common.Result;
 import com.codingos.shirojwt.common.ResultEnum;
 import com.codingos.shirojwt.constant.Constant;
+import com.codingos.shirojwt.entity.User;
 import com.codingos.shirojwt.exception.CustomException;
+import com.codingos.shirojwt.service.UserService;
 
 @Controller
 public class ShiroJwtDemoController {
+	
+	@Autowired
+	private UserService userService;
 
 	@RequestMapping("/tologin")
 	public String tologin() {
@@ -64,5 +70,11 @@ public class ShiroJwtDemoController {
 	@RequestMapping("/exception")
 	public void exception(HttpServletRequest request) {
 		throw new CustomException(new Result<>(ResultEnum.ERROR.getCode(), (String) request.getAttribute("msg")));
+	}
+	
+	@GetMapping("queryUserById")
+	@ResponseBody
+	public User queryUserById(Long id) {
+		return userService.queryUserById(id);
 	}
 }
